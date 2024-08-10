@@ -1,8 +1,10 @@
 // components/Question.tsx
 'use client'
-import {getRandomNumberExcluding} from "@/utils/action"
+
+import { getRandomNumberExcluding } from "@/utils/action"
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+
 interface QuestionProps {
   props: {
     question_id: number;
@@ -30,47 +32,77 @@ export default function Question({ props }: QuestionProps) {
       const parsedData = JSON.parse(storedData);
       const currentTime = Date.now();
       // 30分以内の回答であれば復元
-      if (currentTime - parsedData.lastAnsweredTime < 30 * 60 * 1000) {
+      if (currentTime - parsedData.lastAnsweredTime < 30 * 1000 * 60) {
         setTotalAnswers(parsedData.totalAnswers || 0);
         setCorrectAnswers(parsedData.correctAnswers || 0);
+      } else {
+        // ローカルストレージ全体をクリア
+        localStorage.clear();
       }
     }
   }, []);
+
   const router = useRouter();
 
   const handleNextQuestion = () => {
-    const storedData:any = localStorage.getItem('quizProgress');
+    const storedData: any = localStorage.getItem('quizProgress');
     const parsedData = JSON.parse(storedData);
     console.log((parsedData))
-    const randomQuestionId:number = getRandomNumberExcluding(parsedData.pastAnsQuestion,1,5)
-    if(parsedData.pastAnsQuestion.length >= 5) router.push(`/question/complete`);
-    else router.push(`/question/${randomQuestionId}`); // next/navigation を使用してページ遷移
+    const randomQuestionId: number = getRandomNumberExcluding(parsedData.pastAnsQuestion, 1, 5)
+    console.log(randomQuestionId)
+    router.push(`/question/${randomQuestionId}`); // next/navigation を使用してページ遷移
   };
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // デフォルトの submit 動作をキャンセル
 
-  const handleSubmit = () => {
     // 回答の判定
-    const storedData:any = localStorage.getItem('quizProgress');
-    const parsedData = JSON.parse(storedData);
+    const storedData: any = localStorage.getItem('quizProgress');
+    let parsedData = JSON.parse(storedData);
+    try {
+      parsedData = JSON.parse(storedData || '{}');
+    } catch (error) {
+      console.error('Error parsing quizProgress data:', error);
+      // エラー処理（例：localStorage をクリアする、デフォルト値を設定するなど）
+      localStorage.removeItem('quizProgress');
+      parsedData = {};
+    }
 
-    const isDebitCorrect = JSON.stringify(userDebitEntry) === JSON.stringify(question.correct_debit_entries);
-    const isCreditCorrect = JSON.stringify(userCreditEntry) === JSON.stringify(question.correct_credit_entries);
-    const questionedList  = [...parsedData.pastAnsQuestion] as any
+    const pastAnsQuestion = Array.isArray(parsedData.pastAnsQuestion)
+      ? parsedData.pastAnsQuestion
+      : [];
 
-    questionedList.push(question.question_id)
+    // ここで最新の userDebitEntry と userCreditEntry を取得
+    const currentDebitEntry = {
+      debitAccountName: (e.currentTarget.elements.namedItem("debitAccountName") as HTMLInputElement)?.value || "",
+      debitAmount: parseInt((e.currentTarget.elements.namedItem("debitAmount") as HTMLInputElement)?.value || "0") || 0,
+    };
+    const currentCreditEntry = {
+      creditAccountName: (e.currentTarget.elements.namedItem("creditAccountName") as HTMLInputElement)?.value || "",
+      creditAmount: parseInt((e.currentTarget.elements.namedItem("creditAmount") as HTMLInputElement)?.value || "0") || 0,
+    };
+    console.log(currentDebitEntry)
+// キーと値のペアで判定
+const isDebitKeyCorrect = currentDebitEntry.debitAccountName === Object.keys(question.correct_debit_entries)[0];
+const isDebitValueCorrect = currentDebitEntry.debitAmount === Object.values(question.correct_debit_entries)[0];
+const isCreditKeyCorrect = currentCreditEntry.creditAccountName === Object.keys(question.correct_credit_entries)[0];
+const isCreditValueCorrect = currentCreditEntry.creditAmount === Object.values(question.correct_credit_entries)[0];
 
-    setIsCorrect(isDebitCorrect && isCreditCorrect);
+    const questionedList = [...pastAnsQuestion] as any;
+    questionedList.push(question.question_id);
+
+    setIsCorrect( (isDebitKeyCorrect&&isDebitValueCorrect)&&(isCreditKeyCorrect&&isCreditValueCorrect) );
 
     // ローカルストレージの更新
     setTotalAnswers(totalAnswers + 1);
-    if (isDebitCorrect && isCreditCorrect) {
+    if ( ( (isDebitKeyCorrect&&isDebitValueCorrect)&&(isCreditKeyCorrect&&isCreditValueCorrect)  )) {
       setCorrectAnswers(correctAnswers + 1);
     }
     localStorage.setItem(
       'quizProgress',
       JSON.stringify({
         totalAnswers: totalAnswers + 1,
-        correctAnswers: isDebitCorrect && isCreditCorrect ? correctAnswers + 1 : correctAnswers,
+        correctAnswers: (isDebitKeyCorrect&&isDebitValueCorrect)&&(isCreditKeyCorrect&&isCreditValueCorrect)  ? correctAnswers + 1 : correctAnswers,
         lastAnsweredTime: Date.now(),
         pastAnsQuestion: questionedList
 
@@ -94,7 +126,7 @@ export default function Question({ props }: QuestionProps) {
       <p>{question.question_text}</p>
       {question.explanation && <p>解説: {question.explanation}</p>}
 
-      <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
+      <form onSubmit={handleSubmit}> {/* handleSubmit を直接渡す */}
         <h3>借方</h3>
         <div>
           <label htmlFor="debitAccountName">勘定科目:</label>
@@ -129,4 +161,5 @@ export default function Question({ props }: QuestionProps) {
     </div>
   );
 }
+
 

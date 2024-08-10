@@ -16,6 +16,7 @@ export default async function QuestionPage({ params }: { params: { id: string } 
     console.error(error);
   }else{
     console.log("よくここ見てくれたね( ´∀｀ )")
+    console.log(userAnswers)
   }
 
   return (
