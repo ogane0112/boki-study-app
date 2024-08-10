@@ -121,41 +121,97 @@ const isCreditValueCorrect = currentCreditEntry.creditAmount === Object.values(q
   };
 
   return (
-    <div>
-      <h2>問題 {question.question_id}</h2>
-      <p>{question.question_text}</p>
-      {question.explanation && <p>解説: {question.explanation}</p>}
+    <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h2 className="text-2xl font-bold mb-4 text-indigo-600">問題 {question.question_id}</h2>
+      <p className="mb-4 text-gray-700">{question.question_text}</p>
+      {question.explanation && (
+        <p className="mb-6 p-3 bg-gray-100 rounded text-sm text-gray-600">
+          解説: {question.explanation}
+        </p>
+      )}
 
-      <form onSubmit={handleSubmit}> {/* handleSubmit を直接渡す */}
-        <h3>借方</h3>
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="debitAccountName">勘定科目:</label>
-          <input type="text" id="debitAccountName" name="debitAccountName" onChange={handleDebitEntryChange} />
-        </div>
-        <div>
-          <label htmlFor="debitAmount">金額:</label>
-          <input type="number" id="debitAmount" name="debitAmount" onChange={handleDebitEntryChange} />
+          <h3 className="text-lg font-semibold mb-2 text-indigo-500">借方</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="debitAccountName" className="block text-sm font-medium text-gray-700 mb-1">
+                勘定科目:
+              </label>
+              <input
+                type="text"
+                id="debitAccountName"
+                name="debitAccountName"
+                onChange={handleDebitEntryChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+            <div>
+              <label htmlFor="debitAmount" className="block text-sm font-medium text-gray-700 mb-1">
+                金額:
+              </label>
+              <input
+                type="number"
+                id="debitAmount"
+                name="debitAmount"
+                onChange={handleDebitEntryChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
         </div>
 
-        <h3>貸方</h3>
         <div>
-          <label htmlFor="creditAccountName">勘定科目:</label>
-          <input type="text" id="creditAccountName" name="creditAccountName" onChange={handleCreditEntryChange} />
-        </div>
-        <div>
-          <label htmlFor="creditAmount">金額:</label>
-          <input type="number" id="creditAmount" name="creditAmount" onChange={handleCreditEntryChange} />
+          <h3 className="text-lg font-semibold mb-2 text-indigo-500">貸方</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="creditAccountName" className="block text-sm font-medium text-gray-700 mb-1">
+                勘定科目:
+              </label>
+              <input
+                type="text"
+                id="creditAccountName"
+                name="creditAccountName"
+                onChange={handleCreditEntryChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+            <div>
+              <label htmlFor="creditAmount" className="block text-sm font-medium text-gray-700 mb-1">
+                金額:
+              </label>
+              <input
+                type="number"
+                id="creditAmount"
+                name="creditAmount"
+                onChange={handleCreditEntryChange}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              />
+            </div>
+          </div>
         </div>
 
-        <button type="submit">回答する</button>
+        <button
+          type="submit"
+          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out"
+        >
+          回答する
+        </button>
       </form>
 
       {isCorrect !== null && (
-        <div>
-          <p>{isCorrect ? '正解です！' : '不正解です...'}</p>
-          <p>累計回答数: {totalAnswers}</p>
-          <p>累計正答数: {correctAnswers}</p>
-          <button onClick={handleNextQuestion}>次の問題へ</button>
+        <div className="mt-8 p-4 bg-gray-50 rounded-md">
+          <p className={`text-lg font-semibold ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
+            {isCorrect ? '正解です！' : '不正解です...'}
+          </p>
+          <p className="text-sm text-gray-600 mt-2">累計回答数: {totalAnswers}</p>
+          <p className="text-sm text-gray-600">累計正答数: {correctAnswers}</p>
+          <button
+            onClick={handleNextQuestion}
+            className="mt-4 w-full bg-indigo-100 text-indigo-700 py-2 px-4 rounded-md hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out"
+          >
+            次の問題へ
+          </button>
         </div>
       )}
     </div>
