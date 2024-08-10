@@ -24,6 +24,7 @@ export default function Question({ props }: QuestionProps) {
   const [totalAnswers, setTotalAnswers] = useState(0);
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [lastAnsweredTime, setLastAnsweredTime] = useState<number | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false); 
 
   useEffect(() => {
     // ローカルストレージから回答状況を読み込み
@@ -45,16 +46,29 @@ export default function Question({ props }: QuestionProps) {
   const router = useRouter();
 
   const handleNextQuestion = () => {
+    
     const storedData: any = localStorage.getItem('quizProgress');
     const parsedData = JSON.parse(storedData);
     console.log((parsedData))
-    const randomQuestionId: number = getRandomNumberExcluding(parsedData.pastAnsQuestion, 1, 5)
-    console.log(randomQuestionId)
-    router.push(`/question/${randomQuestionId}`); // next/navigation を使用してページ遷移
+    //ここでif文を使って抜け出しておかないと無限ループにはまってしまう( ´∀｀ )
+    if(parsedData?.pastAnsQuestion?.length >= 5 ) {
+        localStorage.clear();
+        router.push(`/question`);
+
+    }else{
+        const randomQuestionId: number = getRandomNumberExcluding(parsedData?.pastAnsQuestion, 1, 5)
+        console.log(randomQuestionId)
+        router.push(`/question/${randomQuestionId}`); // next/navigation を使用してページ遷移
+    }
+
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // デフォルトの submit 動作をキャンセル
+
+    if (isSubmitted) return;  // すでに回答済みの場合は何もしない
+
+    setIsSubmitted(true);  // 回答ボタンを無効にする
 
     // 回答の判定
     const storedData: any = localStorage.getItem('quizProgress');
@@ -193,7 +207,12 @@ const isCreditValueCorrect = currentCreditEntry.creditAmount === Object.values(q
 
         <button
           type="submit"
-          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out"
+          className={`w-full py-2 px-4 rounded-md transition duration-150 ease-in-out ${
+            isSubmitted 
+              ? 'bg-gray-400 text-gray-700 cursor-not-allowed' 
+              : 'bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'
+          }`}
+          disabled={isSubmitted}
         >
           回答する
         </button>
@@ -209,6 +228,7 @@ const isCreditValueCorrect = currentCreditEntry.creditAmount === Object.values(q
           <button
             onClick={handleNextQuestion}
             className="mt-4 w-full bg-indigo-100 text-indigo-700 py-2 px-4 rounded-md hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out"
+           
           >
             次の問題へ
           </button>

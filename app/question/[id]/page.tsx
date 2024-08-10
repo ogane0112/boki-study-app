@@ -29,6 +29,6 @@ export default async function QuestionPage({ params }: { params: { id: string } 
     <>
         <Question props={userAnswers} />
     </>
-  );
+);
 }
 

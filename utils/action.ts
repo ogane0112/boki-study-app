@@ -4,6 +4,6 @@ export function getRandomNumberExcluding(excludeNumbers:number[], min:number, ma
     let randomNumber;
     do {
       randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
-    } while (excludeNumbers.includes(randomNumber));
+    } while (excludeNumbers?.includes(randomNumber));
     return randomNumber;
   }
