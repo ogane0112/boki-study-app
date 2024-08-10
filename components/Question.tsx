@@ -228,7 +228,6 @@ const isCreditValueCorrect = currentCreditEntry.creditAmount === Object.values(q
           <button
             onClick={handleNextQuestion}
             className="mt-4 w-full bg-indigo-100 text-indigo-700 py-2 px-4 rounded-md hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-150 ease-in-out"
-           
           >
             次の問題へ
           </button>
