@@ -30,8 +30,9 @@ export default function Login({
 
   const signUp = async (formData: FormData) => {
     "use server";
+    
+    const origin = headers().get("origin");//現在のオリジンを示す(ドメインと似ているがプロトコルやポート番号も含めて考える点が違う)
 
-    const origin = headers().get("origin");
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     const supabase = createClient();
@@ -45,10 +46,13 @@ export default function Login({
     });
 
     if (error) {
-      return redirect("/login?message=Could not authenticate user");
+      return redirect("/login");
     }
 
-    return redirect("/login?message=Check email to continue sign in process");
+    
+    
+
+    return redirect("/login");
   };
 
   return (
