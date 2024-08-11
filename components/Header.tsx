@@ -1,44 +1,95 @@
-import NextLogo from "./NextLogo";
-import SupabaseLogo from "./SupabaseLogo";
+"use client"
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { UserCircle, Home, BookOpen, ClipboardList, Menu } from 'lucide-react';
 
-export default function Header() {
+const Header = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  useEffect(() => {
+    // メニューが開いている間はスクロールを無効にする
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'auto';
+  }, [isMobileMenuOpen]);
+
   return (
-    <div className="flex flex-col gap-16 items-center">
-      <div className="flex gap-8 justify-center items-center">
-        <a
-          href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-          target="_blank"
-          rel="noreferrer"
-        >
-          <SupabaseLogo />
-        </a>
-        <span className="border-l rotate-45 h-6" />
-        <a href="https://nextjs.org/" target="_blank" rel="noreferrer">
-          <NextLogo />
-        </a>
+    <header className="bg-indigo-600 text-white shadow-md h-12 relative"> 
+      <div className="container mx-auto px-4 py-3">
+        <nav className="flex items-center justify-between">
+          <div className="text-xl font-bold">簿記マスター</div>
+
+          {/* ハンバーガーメニューボタン */}
+          <button className="md:hidden z-10" onClick={toggleMobileMenu}> 
+            <Menu size={24} />
+          </button>
+
+          {/* PC表示時のナビゲーションメニュー */}
+          <ul className="hidden md:flex space-x-6">
+            <li>
+              <Link href="/login" className="flex items-center hover:text-indigo-200 transition-colors">
+                <UserCircle className="mr-1" size={20} />
+                <span>ログイン/初回登録</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/" className="flex items-center hover:text-indigo-200 transition-colors">
+                <Home className="mr-1" size={20} />
+                <span>ホーム</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/question" className="flex items-center hover:text-indigo-200 transition-colors">
+                <BookOpen className="mr-1" size={20} />
+                <span>仕分け道場</span>
+              </Link>
+            </li>
+            <li>
+              <Link href="/pastquestions" className="flex items-center hover:text-indigo-200 transition-colors">
+                <ClipboardList className="mr-1" size={20} />
+                <span>過去問道場</span>
+              </Link>
+            </li>
+          </ul>
+
+          {/* モバイル表示時のナビゲーションメニュー */}
+          {isMobileMenuOpen && (
+            <ul className="absolute top-0 left-0 w-full bg-indigo-600 p-4 space-y-2 md:hidden">
+              <li>
+                <Link href="/login" className="flex items-center hover:text-indigo-200 transition-colors" onClick={toggleMobileMenu}> 
+                  <UserCircle className="mr-1" size={20} />
+                  <span>ログイン/初回登録</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/" className="flex items-center hover:text-indigo-200 transition-colors" onClick={toggleMobileMenu}>
+                  <Home className="mr-1" size={20} />
+                  <span>ホーム</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/question" className="flex items-center hover:text-indigo-200 transition-colors" onClick={toggleMobileMenu}>
+                  <BookOpen className="mr-1" size={20} />
+                  <span>仕分け道場</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/pastquestions" className="flex items-center hover:text-indigo-200 transition-colors" onClick={toggleMobileMenu}>
+                  <ClipboardList className="mr-1" size={20} />
+                  <span>過去問道場</span>
+                </Link>
+              </li>
+            </ul>
+          )}
+        </nav>
       </div>
-      <h1 className="sr-only">Supabase and Next.js Starter Template</h1>
-      <p className="text-3xl lg:text-4xl !leading-tight mx-auto max-w-xl text-center">
-        The fastest way to build apps with{" "}
-        <a
-          href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-          target="_blank"
-          className="font-bold hover:underline"
-          rel="noreferrer"
-        >
-          Supabase
-        </a>{" "}
-        and{" "}
-        <a
-          href="https://nextjs.org/"
-          target="_blank"
-          className="font-bold hover:underline"
-          rel="noreferrer"
-        >
-          Next.js
-        </a>
-      </p>
-      <div className="w-full p-[1px] bg-gradient-to-r from-transparent via-foreground/10 to-transparent my-8" />
-    </div>
+    </header>
   );
-}
+};
+
+export default Header;
+
+
+
