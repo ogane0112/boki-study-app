@@ -13,22 +13,22 @@ interface QuestionProps {
 }
 
 export default async function QuestionPage({ params }: { params: { id: string } }) {
-  const supabase = createClient();
-  const { id } = params;
+ const supabase = createClient();
+ const { id } = params;
 
-  const { data: userAnswers, error } = await supabase
-    .from('questions')
-    .select('*')
-    .eq('question_id', id);
+ const { data: userAnswers, error } = await supabase
+    .from('questions')
+    .select('*')
+    .eq('question_id', id);
 
-  if (error || userAnswers.length === 0) {
-    return <div>問題が見つかりませんでした</div>;
-  }
+ if (error || userAnswers.length === 0) {
+ return <div>問題が見つかりませんでした</div>;
+ }
 
-  return (
-    <>
-        <Question props={userAnswers} />
-    </>
+ return (
+ <>
+     <Question props={userAnswers} />
+ </>
 );
 }
 
