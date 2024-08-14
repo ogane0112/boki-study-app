@@ -138,11 +138,6 @@ const isCreditValueCorrect = currentCreditEntry.creditAmount === Object.values(q
     <div className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
       <h2 className="text-2xl font-bold mb-4 text-indigo-600">問題 {question.question_id}</h2>
       <p className="mb-4 text-gray-700">{question.question_text}</p>
-      {question.explanation && (
-        <p className="mb-6 p-3 bg-gray-100 rounded text-sm text-gray-600">
-          解説: {question.explanation}
-        </p>
-      )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
@@ -223,6 +218,11 @@ const isCreditValueCorrect = currentCreditEntry.creditAmount === Object.values(q
           <p className={`text-lg font-semibold ${isCorrect ? 'text-green-600' : 'text-red-600'}`}>
             {isCorrect ? '正解です！' : '不正解です...'}
           </p>
+          {question.explanation && (
+        <p className="mb-6 p-3 bg-gray-100 rounded text-sm text-gray-600">
+          解説: {question.explanation}
+        </p>
+        )}
           <p className="text-sm text-gray-600 mt-2">累計回答数: {totalAnswers}</p>
           <p className="text-sm text-gray-600">累計正答数: {correctAnswers}</p>
           <button

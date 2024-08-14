@@ -19,7 +19,7 @@ const Header = () => {
     <header className="bg-indigo-600 text-white shadow-md h-12 relative"> 
       <div className="container mx-auto px-4 py-3">
         <nav className="flex items-center justify-between">
-          <div className="text-xl font-bold">簿記マスター</div>
+          <div className="text-xl font-bold">簿記３級対策サイト</div>
 
           {/* ハンバーガーメニューボタン */}
           <button className="md:hidden z-10" onClick={toggleMobileMenu}> 
