@@ -43,7 +43,7 @@ const Header = () => {
             <li>
               <Link href="/question" className="flex items-center hover:text-indigo-200 transition-colors">
                 <BookOpen className="mr-1" size={20} />
-                <span>仕分け道場</span>
+                <span>仕訳道場</span>
               </Link>
             </li>
             <li>
