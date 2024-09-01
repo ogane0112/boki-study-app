@@ -61,11 +61,11 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
   }
 
   return (
-    <div className='flex flex-col min-h-screen bg-gray-900 text-white'>
+    <div className='flex flex-col min-h-screen'>
       <nav className='p-4'>
         <Link
           href='/'
-          className='inline-flex items-center py-2 px-4 rounded-md no-underline text-gray-300 bg-gray-800 hover:bg-gray-700 transition-colors text-sm'
+          className='inline-flex items-center py-2 px-4 rounded-md no-underline  transition-colors text-sm font-bold bg-blue-700 hover:bg-blue-600 text-white'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -86,7 +86,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
       </nav>
 
       <main className='flex-1 flex justify-center items-center p-4'>
-        <section className='w-full max-w-md bg-gray-800 p-8 rounded-lg shadow-lg'>
+        <section className='w-full max-w-md bg-white p-8 rounded-lg shadow-lg'>
           <form className='flex flex-col w-full gap-4'>
             <h1 className='text-2xl font-bold mb-2'>サインアップ</h1>
             <p className='text-sm text-gray-400'>
@@ -104,7 +104,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
                 type='email'
                 placeholder='you@example.com'
                 required
-                className='w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                className='w-full px-3 py-2  rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
               />
               <Label htmlFor='confirmEmail' className='block mb-1 mt-2'>
                 確認用メールアドレス
@@ -114,7 +114,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
                 type='email'
                 placeholder='you@example.com'
                 required
-                className='w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                className='w-full px-3 py-2  rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
               />
             </div>
             <div>
@@ -126,7 +126,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
                 name='password'
                 placeholder='••••••••'
                 required
-                className='w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                className='w-full px-3 py-2  rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
               />
               <Label htmlFor='confirmPassword' className='block mb-1 mt-2'>
                 確認用パスワード
@@ -136,7 +136,7 @@ export default function Signup({ searchParams }: { searchParams: Message }) {
                 name='confirmPassword'
                 placeholder='••••••••'
                 required
-                className='w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                className='w-full px-3 py-2  rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
               />
             </div>
             <SubmitButton

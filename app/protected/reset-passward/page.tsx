@@ -41,7 +41,7 @@ export default async function ResetPassword({ searchParams }: { searchParams: Me
   }
 
   return (
-    <div className='flex-1 flex flex-col items-center justify-center w-full'>
+    
       <form className='flex flex-col w-full max-w-md p-4 gap-2 [&>input]:mb-4'>
         <h1 className='text-2xl font-medium'>Reset password</h1>
         <p className='text-sm text-foreground/60'>Please enter your new password below.</p>
@@ -53,6 +53,5 @@ export default async function ResetPassword({ searchParams }: { searchParams: Me
         <SubmitButton formAction={resetPassword}>Reset password</SubmitButton>
         <FormMessage message={searchParams} />
       </form>
-    </div>
   )
 }

@@ -28,11 +28,11 @@ export default function Login({ searchParams }: { searchParams: Message }) {
   }
 
   return (
-    <div className='flex flex-col min-h-screen bg-gray-900 text-white'>
-      <nav className='p-4'>
+    <div className='flex flex-col md:flex-row min-h-screen'>
+      <nav className='p-4 '>
         <Link
           href='/'
-          className='inline-flex items-center py-2 px-4 rounded-md no-underline text-gray-300 bg-gray-800 hover:bg-gray-700 transition-colors text-sm'
+          className='inline-flex items-center py-2 px-4 rounded-md no-underline font-bold bg-blue-700 hover:bg-blue-600  text-white   transition-colors text-sm'
         >
           <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -53,9 +53,9 @@ export default function Login({ searchParams }: { searchParams: Message }) {
       </nav>
 
       <main className='flex-1 flex justify-center items-center p-4'>
-        <section className='w-full max-w-md bg-gray-800 p-8 rounded-lg shadow-lg'>
+        <section className='w-full max-w-md bg-white p-8 rounded-lg shadow-lg'>
           <form className='flex flex-col w-full gap-4'>
-            <h1 className='text-2xl font-bold mb-2'>サインイン</h1>
+            <h1 className='text-2xl mb-2 font-bold text-blue-800'>サインイン</h1>
             <div>
               <Label htmlFor='email' className='block mb-1'>
                 メールアドレス
@@ -65,12 +65,12 @@ export default function Login({ searchParams }: { searchParams: Message }) {
                 type='email'
                 placeholder='you@example.com'
                 required
-                className='w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                className='w-full px-3 py-2  rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
               />
             </div>
             <div>
               <div className='flex justify-between items-center mb-1'>
-                <Label htmlFor='password'>パスワード</Label>
+                <Label htmlFor='password'className='block mb-1 '>パスワード</Label>
                 <Link className='text-sm text-blue-400 hover:underline' href='/forgot-password'>
                   パスワードをお忘れですか?
                 </Link>
@@ -80,23 +80,15 @@ export default function Login({ searchParams }: { searchParams: Message }) {
                 name='password'
                 placeholder='••••••••'
                 required
-                className='w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
+                className='w-full px-3 py-2 rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
               />
             </div>
             <div className='flex items-center mb-4'>
-              <input
-                type='checkbox'
-                id='remember'
-                className='mr-2 rounded bg-gray-700 border-gray-600 text-blue-500 focus:ring-blue-500'
-              />
-              <Label htmlFor='remember' className='text-sm'>
-                ログイン状態を保持
-              </Label>
             </div>
             <SubmitButton
               formAction={signIn}
               pendingText='サインイン中...'
-              className='w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors'
+              className='w-full bg-blue-600 hover:bg-blue-700  text-white font-bold block py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors'
             >
               サインイン
             </SubmitButton>
