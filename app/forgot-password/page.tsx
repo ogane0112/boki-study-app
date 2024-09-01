@@ -5,26 +5,44 @@ import { SubmitButton } from '../../components/form/submit-button'
 import { Label } from '@/components/form/label'
 import { Input } from '@/components/form/input'
 import { FormMessage, Message } from '@/components/form/form-message'
+import { headers } from 'next/headers'
 import { encodedRedirect } from '@/utils/utils'
 
-export default function Login({ searchParams }: { searchParams: Message }) {
-  const signIn = async (formData: FormData) => {
+export default function ForgotPassword({ searchParams }: { searchParams: Message }) {
+  const forgotPassword = async (formData: FormData) => {
     'use server'
 
-    const email = formData.get('email') as string
-    const password = formData.get('password') as string
+    const email = formData.get('email')?.toString()
+    const confirmEmail = formData.get('confirmEmail')?.toString()
     const supabase = createClient()
+    const origin = headers().get('origin')
+    const callbackUrl = formData.get('callbackUrl')?.toString()
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
+    if (!email) {
+      return encodedRedirect('error', '/forgot-password', 'メールアドレスを入力してください')
+    }
+    if (email != confirmEmail) {
+      return encodedRedirect('error', '/forgot-password', 'メールアドレスが一致しません')
+    }
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
     })
 
     if (error) {
-      return encodedRedirect('error', '/login', 'Could not authenticate user')
+      console.error(error.message)
+      return encodedRedirect('error', '/forgot-password', 'パスワードをリセットできませんでした')
     }
 
-    return redirect('/')
+    if (callbackUrl) {
+      return redirect(callbackUrl)
+    }
+
+    return encodedRedirect(
+      'success',
+      '/forgot-password',
+      'パスワードリセット用のリンクをメールで送信しました。'
+    )
   }
 
   return (
@@ -55,7 +73,13 @@ export default function Login({ searchParams }: { searchParams: Message }) {
       <main className='flex-1 flex justify-center items-center p-4'>
         <section className='w-full max-w-md bg-gray-800 p-8 rounded-lg shadow-lg'>
           <form className='flex flex-col w-full gap-4'>
-            <h1 className='text-2xl font-bold mb-2'>サインイン</h1>
+            <h1 className='text-2xl font-bold mb-2'>パスワードリセット</h1>
+            <p className='text-sm text-gray-400'>
+              アカウントをお持ちですか?{' '}
+              <Link className='text-blue-400 hover:underline font-medium' href='/login'>
+                ログイン
+              </Link>
+            </p>
             <div>
               <Label htmlFor='email' className='block mb-1'>
                 メールアドレス
@@ -69,44 +93,24 @@ export default function Login({ searchParams }: { searchParams: Message }) {
               />
             </div>
             <div>
-              <div className='flex justify-between items-center mb-1'>
-                <Label htmlFor='password'>パスワード</Label>
-                <Link className='text-sm text-blue-400 hover:underline' href='/forgot-password'>
-                  パスワードをお忘れですか?
-                </Link>
-              </div>
+              <Label htmlFor='confirmEmail' className='block mb-1'>
+                メールアドレス（確認）
+              </Label>
               <Input
-                type='password'
-                name='password'
-                placeholder='••••••••'
+                name='confirmEmail'
+                type='email'
+                placeholder='you@example.com'
                 required
                 className='w-full px-3 py-2 bg-gray-700 rounded border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500'
               />
             </div>
-            <div className='flex items-center mb-4'>
-              <input
-                type='checkbox'
-                id='remember'
-                className='mr-2 rounded bg-gray-700 border-gray-600 text-blue-500 focus:ring-blue-500'
-              />
-              <Label htmlFor='remember' className='text-sm'>
-                ログイン状態を保持
-              </Label>
-            </div>
             <SubmitButton
-              formAction={signIn}
-              pendingText='サインイン中...'
+              formAction={forgotPassword}
               className='w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-colors'
             >
-              サインイン
+              パスワードをリセット
             </SubmitButton>
             <FormMessage message={searchParams} />
-            <p className='text-sm text-center mt-4'>
-              アカウントをお持ちでないですか?{' '}
-              <Link className='text-blue-400 hover:underline font-medium' href='/signup'>
-                新規登録
-              </Link>
-            </p>
           </form>
         </section>
       </main>
