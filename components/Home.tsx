@@ -4,7 +4,7 @@ import { Book, Award, BarChart, Users } from 'lucide-react';
 
 const HomePage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-100 to-white">
+    <div className="min-h-screen  from-indigo-100 to-white">
       <main className="container mx-auto px-4 py-12">
         {/* Hero Section */}
         <section className="text-center mb-16">
@@ -22,7 +22,7 @@ const HomePage = () => {
         {/* Features Section */}
         <section className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {[
-            { icon: <Book size={40} />, title: "仕分け道場", description: "実践的な仕訳問題で基礎を固める" },
+            { icon: <Book size={40} />, title: "仕訳道場", description: "実践的な仕訳問題で基礎を固める" },
             { icon: <Award size={40} />, title: "過去問道場", description: "本番さながらの問題で実力を試す" },
             { icon: <BarChart size={40} />, title: "進捗管理", description: "あなたの学習状況を可視化" },
             { icon: <Users size={40} />, title: "コミュニティ", description: "仲間と一緒に成長しよう" },
