@@ -28,7 +28,7 @@ export default function Login({ searchParams }: { searchParams: Message }) {
   }
 
   return (
-    <div className='flex flex-col md:flex-row min-h-screen'>
+    <div className='flex flex-col min-h-screen'>
       <nav className='p-4 '>
         <Link
           href='/'

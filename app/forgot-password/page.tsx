@@ -46,7 +46,7 @@ export default function ForgotPassword({ searchParams }: { searchParams: Message
   }
 
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col min-h-screen'>
       <nav className='p-4'>
         <Link
           href='/'
